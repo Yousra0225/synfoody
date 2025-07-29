@@ -29,6 +29,9 @@ class Recipe
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $duration = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,4 +54,16 @@ class Recipe
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): static {$this->updatedAt = $updatedAt; return $this;}
 
     public function setContent(string $content): static {$this->content = $content; return $this;}
+
+    public function getDuration(): ?int
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(?int $duration): static
+    {
+        $this->duration = $duration;
+
+        return $this;
+    }
 }
