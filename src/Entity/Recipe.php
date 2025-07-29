@@ -34,63 +34,21 @@ class Recipe
         return $this->id;
     }
 
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
+    /**
+     * Getters and Setters for the properties
+     * These methods allow access to the private properties of the class.
+     */
+    public function getTitle(): ?string{return $this->title;}
+    public function getSlug(): ?string{return $this->slug;}
+    public function getContent(): ?string {return $this->content;}
+    public function getCreatedAt(): ?\DateTimeImmutable {return $this->createdAt;}
+    public function getUpdatedAt(): ?\DateTimeImmutable {return $this->updatedAt;}
 
-    public function setTitle(string $title): static
-    {
-        $this->title = $title;
+    public function setTitle(string $title): static {$this->title = $title; return $this;}
+    public function setSlug(string $slug): static {$this->slug = $slug; return $this;}
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static {$this->createdAt = $createdAt; return $this;}
 
-        return $this;
-    }
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static {$this->updatedAt = $updatedAt; return $this;}
 
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): static
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(string $content): static
-    {
-        $this->content = $content;
-
-        return $this;
-    }
+    public function setContent(string $content): static {$this->content = $content; return $this;}
 }
