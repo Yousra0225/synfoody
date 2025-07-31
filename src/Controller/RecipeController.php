@@ -13,6 +13,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class RecipeController extends AbstractController {
+    /**
+     * Method to show the list of recipes
+     * @param Request $request
+     * @param RecipeRepository $repository
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/recipe', name: 'recipe.index')]
     public function index(Request $request, recipeRepository $repository, EntityManagerInterface $em) : Response {
         //dd($em->getRepository(Recipe::class));
@@ -40,6 +47,14 @@ final class RecipeController extends AbstractController {
        return $this->render('recipe/index.html.twig', ['recipes' => $recipes]);
     }
 
+    /**
+     * Method to show a recipes with it's details
+     * @param Request $request
+     * @param String $slug
+     * @param int $id
+     * @param RecipeRepository $repository
+     * @return Response
+     */
     #[Route('/recipe/{id}-{slug}', name: 'recipe.show', requirements: ['slug' => '[a-z0-9\-]+'])]
     public function show(Request $request, String $slug, int $id, RecipeRepository $repository): Response{
         $recipe = $repository->find($id);
@@ -49,6 +64,13 @@ final class RecipeController extends AbstractController {
         return $this->render(( 'recipe/show.html.twig'), ['recipe' => $recipe]);
     }
 
+    /**
+     * Method to edit a recipe
+     * @param Recipe $recipe
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('recipe/{id}/edit', name: 'recipe.edit')]
     public function edit(Recipe $recipe, Request $request, EntityManagerInterface $em): Response {
         $form = $this->createForm(RecipeType::class, $recipe);
@@ -61,17 +83,22 @@ final class RecipeController extends AbstractController {
         return $this->render('recipe/edit.html.twig', ['recipe' => $recipe, 'form' => $form]);
     }
 
+    /**
+     * Method to create a recipe
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #Route('recipe/create', name: recipe.create')]
     public function create(Request $request, EntityManagerInterface $em): Response {
-        $form = $this->createForm(RecipeType::class, new Recipe());
+        $recipe = new Recipe();
+        $form = $this->createForm(RecipeType::class, $recipe;
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $em->flush();
             $this->addFlash('success', 'Recette ajoutée avec succès !');
             return $this->redirectToRoute('recipe.index');
         }
-        return $this->render('recipe/create.html.twig', ['recipe' => $form]);
+        return $this->render('recipe/create.html.twig', ['form' => $form]);
     }
-
-
 }
