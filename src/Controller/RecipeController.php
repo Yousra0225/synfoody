@@ -34,7 +34,7 @@ final class RecipeController extends AbstractController {
             //->setDuration(75)
             //->setIngredients('Farine, beurre fondu, sel, eau de fleur d’oranger, eau. Amandes mondées et moulues, sucre en poudre, cannelle moulue, eau de fleur d’oranger, beurre.')
             //->setCreatedAt(new \DateTimeImmutable())
-            //->setUpdatedAt(new \DateTimeImmutable());
+            //->se tUpdatedAt(new \DateTimeImmutable());
         //$em->persist($recipe); // pour ajouter la recette à l'EntityManager
         //$em->flush();
 
@@ -56,7 +56,7 @@ final class RecipeController extends AbstractController {
      * @return Response
      */
     #[Route('/recipe/{id}-{slug}', name: 'recipe.show', requirements: ['slug' => '[a-z0-9\-]+'])]
-    public function show(Request $request, String $slug, int $id, RecipeRepository $repository): Response{
+    public function show(Request $request, string $slug, int $id, RecipeRepository $repository): Response{
         $recipe = $repository->find($id);
         if ($recipe->getSlug() !== $slug) {
             return $this->redirectToRoute('recipe.show', ['slug' => $recipe->getSlug(),'id'=> $recipe->getId()]);
@@ -71,7 +71,7 @@ final class RecipeController extends AbstractController {
      * @param EntityManagerInterface $em
      * @return Response
      */
-    #[Route('recipe/{id}/edit', name: 'recipe.edit')]
+    #[Route('recipe/{id}/edit', name: 'recipe.edit', methods: ['POST', 'GET'])]
     public function edit(Recipe $recipe, Request $request, EntityManagerInterface $em): Response {
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request); //gérer la requête HTTP et enregistrer le formulaire avec les données soumises
@@ -89,16 +89,37 @@ final class RecipeController extends AbstractController {
      * @param EntityManagerInterface $em
      * @return Response
      */
-    #Route('recipe/create', name: recipe.create')]
+    #[Route('recipe/create', name: 'recipe.create', methods: ['POST', 'GET'])]
     public function create(Request $request, EntityManagerInterface $em): Response {
         $recipe = new Recipe();
-        $form = $this->createForm(RecipeType::class, $recipe;
+        $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            $recipe->setCreatedAt(new \DateTimeImmutable());
+            $recipe->setUpdatedAt(new \DateTimeImmutable());
+            $em->persist($recipe);
             $em->flush();
             $this->addFlash('success', 'Recette ajoutée avec succès !');
             return $this->redirectToRoute('recipe.index');
         }
         return $this->render('recipe/create.html.twig', ['form' => $form]);
+    }
+
+
+    /**
+     * Method to delete a recipe
+     * @param Recipe $recipe
+     * @param Request $request
+     * @param String $slug
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    #[Route('recipe/{id}/delete', name: 'recipe.delete', methods: ['DELETE'])]
+    public function delete(Recipe $recipe, Request $request, EntityManagerInterface $em): Response {
+
+        $em->remove($recipe);
+        $em->flush();
+        $this->addFlash('success','Recette supprimée avec succès');
+        return $this->redirectToRoute('recipe.index');
     }
 }
