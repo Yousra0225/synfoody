@@ -2,12 +2,39 @@
 
 {% block title  "Toute les recettes" %}
 {% block body %}
-    <ul>
-        <h3>Recettes Marocaine</h3>
-        {#  {{ dump(app) }}#}
-        {% for recipe in recipes %}
-        <li><a class ="nav-link" href = "{{ path('recipe.show', {id:recipe.id, slug: recipe.slug}) }}">{{ recipe.title }}</a></li>
+    <p style="font-family: 'Pacifico', cursive; font-size: 1.4rem; font-weight: bold;">
+        Découvrez notre collection de recettes savoureuses et faciles à réaliser, conçues pour ravir vos papilles à chaque repas. Que vous soyez un cuisinier débutant ou un chef passionné, vous trouverez ici des idées gourmandes pour toutes les occasions, avec des ingrédients accessibles et des instructions claires. Laissez-vous inspirer et partagez le plaisir de cuisiner !
+    </p>
 
+    <p>
+        <a class="btn btn-primary bg-dark btn-sm"  href="{{ path('recipe.create') }} " style="  font-size: 1.09rem" >Créer une nouvelle recette</a>
+    </p>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Recette</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for recipe in recipes %}
+        <tr>
+            <td>
+                <a href="{{ path('recipe.show', {id: recipe.id, slug: recipe.slug}) }}" style=" cursive; font-weight: bold; color: rgba(0,0,0,0.98); font-size: 1.05rem;">
+                    {{ recipe.title }}
+                </a>            </td>
+            <td>
+                <div class ="d-flex gap-1">
+                    <a class ="btn btn-primary bg-dark btn-sm" href = "{{ path('recipe.edit', {id:recipe.id}) }}">Editer</a>
+                    <form action="{{ path('recipe.delete', {id:recipe.id}) }}" method="post">
+                        <input type ="hidden" name="_method" value="DELETE">
+                        <button type="submit" class ="btn btn-danger  btn-sm">Supprimer</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
         {% endfor %}
-    </ul>
+        </tbody>
+    </table>
 {% endblock %}
