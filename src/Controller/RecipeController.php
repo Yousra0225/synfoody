@@ -76,6 +76,7 @@ final class RecipeController extends AbstractController {
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request); //gérer la requête HTTP et enregistrer le formulaire avec les données soumises
         if($form->isSubmitted() && $form->isValid()){
+            //$recipe->setUpdatedAt(new \DateTimeImmutable());
             $em->flush(); // pour enregistrer les modifications dans la base de données
             $this->addFlash('success', 'Recette modifiée avec succès !');
             return $this->redirectToRoute('recipe.index');
@@ -95,8 +96,8 @@ final class RecipeController extends AbstractController {
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $recipe->setCreatedAt(new \DateTimeImmutable());
-            $recipe->setUpdatedAt(new \DateTimeImmutable());
+           //recipe->setCreatedAt(new \DateTimeImmutable());
+           //recipe->setUpdatedAt(new \DateTimeImmutable());
             $em->persist($recipe);
             $em->flush();
             $this->addFlash('success', 'Recette ajoutée avec succès !');
