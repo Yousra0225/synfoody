@@ -26,11 +26,10 @@ class   RecipeType extends AbstractType
             ->add('slug', TextType::class, [
                 'required' => false,
                 // sequentially permet de valider plusieurs contraintes dans le tableau une après l'autre, si une des contraintes échoue, la validation s'arrête et l'erreur est renvoyée sans continuer à parcourir lz tableau.
-                'constraints' => new Sequentially([
-                    new Length(min: 6, minMessage: 'Le slug doit contenir en moin 6 caractères'),
-                    new Regex('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', message: "Ceci n'est pas un slug valide.")
-
-                ])
+                //'constraints' => new Sequentially([
+                //   new Length(min: 6, minMessage: 'Le slug doit contenir en moin 6 caractères'),
+                //   new Regex('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', message: "Ceci n'est pas un slug valide.")
+                //])
             ])
             ->add('content')
             ->add('duration')
