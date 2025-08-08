@@ -58,6 +58,7 @@ final class RecipeController extends AbstractController {
     #[Route('/recipe/{id}-{slug}', name: 'recipe.show', requirements: ['slug' => '[a-z0-9\-]+'])]
     public function show(Request $request, string $slug, int $id, RecipeRepository $repository): Response{
         $recipe = $repository->find($id);
+        //dd($recipe);
         if ($recipe->getSlug() !== $slug) {
             return $this->redirectToRoute('recipe.show', ['slug' => $recipe->getSlug(),'id'=> $recipe->getId()]);
         }
